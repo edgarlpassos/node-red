@@ -445,7 +445,9 @@
         RED.nodes.init();
         RED.comms.connect();
 
-        //RED.watcher.init(); // TODO [ASSO]
+        RED.watcher.init();
+        console.log('RED.watcher'); // TODO [ASSO]
+        console.log(RED.watcher); // TODO [ASSO]
 
         $("#main-container").show();
         $(".header-toolbar").show();
