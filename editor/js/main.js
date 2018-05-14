@@ -445,6 +445,8 @@
         RED.nodes.init();
         RED.comms.connect();
 
+        //RED.watcher.init(); // TODO [ASSO]
+
         $("#main-container").show();
         $(".header-toolbar").show();
 

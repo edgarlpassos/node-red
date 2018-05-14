@@ -382,6 +382,7 @@ RED.view = (function() {
                 }
 
                 RED.history.push(historyEvent);
+                console.log("view.js :: adding node");
                 RED.nodes.add(nn);
                 RED.editor.validateNode(nn);
                 RED.nodes.dirty(true);

@@ -187,6 +187,9 @@ RED.nodes = (function() {
     }
 
     function addNode(n) {
+        console.log("editor/js/nodes.js :: node Added");
+        console.log(n);
+        //RED.watcher.notifyNodeAdded(n); TODO: this
         if (n.type.indexOf("subflow") !== 0) {
             n["_"] = n._def._;
         } else {
@@ -216,6 +219,9 @@ RED.nodes = (function() {
         RED.events.emit('nodes:add',n);
     }
     function addLink(l) {
+        console.log("editor/js/nodes.js :: link Added");
+        console.log(l);
+        //RED.watcher.notifyLinkAdded(l); TODO :: this
         links.push(l);
     }
 
