@@ -339,6 +339,7 @@ RED.view = (function() {
             drop: function( event, ui ) {
                 d3.event = event;
                 var selected_tool = ui.draggable[0].type;
+                console.log(ui.draggable[0].type);
                 var result = addNode(selected_tool);
                 if (!result) {
                     return;
@@ -469,6 +470,8 @@ RED.view = (function() {
 
         nn.type = type;
         nn._def = RED.nodes.getType(nn.type);
+        console.log(nn.type);
+        console.log(nn._def);
 
         if (!m) {
             nn.inputs = nn._def.inputs || 0;
@@ -2669,6 +2672,7 @@ RED.view = (function() {
 
     return {
         init: init,
+        addNode: addNode,
         state:function(state) {
             if (state == null) {
                 return mouse_mode

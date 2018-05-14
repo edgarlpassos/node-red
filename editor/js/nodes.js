@@ -291,6 +291,10 @@ RED.nodes = (function() {
             console.log("Deprecated API warning: node type ",node.type," has an onremove function - should be oneditremove - please report");
             node._def.onremove.call(n);
         }
+
+        RED.watcher.notifyNodeRemoved(node);
+        removedLinks.forEach(function(link) { RED.watcher.notifyLinkRemoved(link) });
+
         return {links:removedLinks,nodes:removedNodes};
     }
 
@@ -299,6 +303,7 @@ RED.nodes = (function() {
         if (index != -1) {
             links.splice(index,1);
         }
+        console.log(l);
     }
 
     function addWorkspace(ws) {
