@@ -384,6 +384,7 @@ RED.view = (function() {
 
                 RED.history.push(historyEvent);
                 console.log("view.js :: adding node");
+                console.log(nn)
                 RED.nodes.add(nn);
                 RED.editor.validateNode(nn);
                 RED.nodes.dirty(true);
@@ -469,9 +470,10 @@ RED.view = (function() {
         var nn = { id:RED.nodes.id(),z:RED.workspaces.active()};
 
         nn.type = type;
+        console.log('fetching defs');
         nn._def = RED.nodes.getType(nn.type);
         console.log(nn.type);
-        console.log(nn._def);
+        console.log(nn);
 
         if (!m) {
             nn.inputs = nn._def.inputs || 0;
