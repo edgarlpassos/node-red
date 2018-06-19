@@ -1,0 +1,23 @@
+{
+  "name": "asso-broker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "broker": "node broker.js",
+    "raspberry1": "ID=1 nodemon raspberry.js",
+    "raspberry2": "ID=2 nodemon raspberry.js",
+    "watcher": "ID=watcher nodemon watcher.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "data-store": "^3.0.0",
+    "mosca": "^2.8.1",
+    "mqtt": "^1.6.3",
+    "pkgconfig": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.4"
+  }
+}

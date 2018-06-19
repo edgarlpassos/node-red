@@ -3,7 +3,23 @@
  * Edgar Passos, José Pedro Monteiro, Maria João Mira Paulo 
  **/
 RED.watcher = (function() {
+
+    var settings = {
+        protocolId: 'MQIsdp',
+        protocolVersion: 3,
+        keepalive: 1000, // sec
+        lastWillTopic: 'watcher/offline',
+        clientId: 'id'
+    }
+
+    var client = mqtt.connect('ws://localhost:3000', settings)
+    
+    client.on('connect', function() {
+        client.subscribe('watcher/online');
+    })
+
     function init() {
+        
     }
 
     function test() {
@@ -74,6 +90,10 @@ RED.watcher = (function() {
     function deviceDisconnected(ip) {
     }
 
+    function getInstance() {
+        return RED;
+    }
+
     return {
         addNode: addNode,
         init: init,
@@ -82,6 +102,7 @@ RED.watcher = (function() {
         notifyLinkAdded: notifyLinkAdded,
         notifyLinkRemoved: notifyLinkRemoved,
         removeNode: removeNode,
-        test: test
+        test: test,
+        getInstance: getInstance
     }
 })();
