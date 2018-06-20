@@ -9,13 +9,28 @@ RED.watcher = (function() {
         protocolVersion: 3,
         keepalive: 1000, // sec
         lastWillTopic: 'watcher/offline',
-        clientId: 'id'
+        clientId: 'node-red-watcher'
     }
 
-    var client = mqtt.connect('ws://localhost:3000', settings)
+    var client = mqtt.connect('ws://localhost:1080', settings)
     
     client.on('connect', function() {
-        client.subscribe('watcher/online');
+        client.subscribe('raspberry/all');
+    })
+
+    client.on('message', function(topic, message) {
+        switch (topic) {
+            case 'raspberry/all':
+                var parsedMessage = new TextDecoder("utf-8").decode(message);
+                var messageInfo = parsedMessage.split(':');
+                if (messageInfo[0].trim() === 'RPi connected') {
+                    var deviceName = messageInfo[1].trim();
+                    deviceConnected(deviceName);
+                }
+                break;
+            default:
+                break;
+        }
     })
 
     function init() {
@@ -23,41 +38,35 @@ RED.watcher = (function() {
     }
 
     function test() {
-        deviceConnected('127.0.0.1', '3000', '3001');
+        //deviceConnected('127.0.0.1', '3000', '3001');
     }
 
     // Called when a node is added in the canvas
     function notifyNodeAdded(newNode) {
         console.log("Watcher :: Node added.");
-        console.log(newNode);
     }
 
     // Called when a node is removed in the canvas
     function notifyNodeRemoved(node) {
         console.log('Watcher :: Node Removed');
-        console.log(node);
     }
 
     // Called when a link is added in the canvas
     function notifyLinkAdded(newLink) {
         console.log("Watcher :: Link added.");
-        console.log(newLink);
     }
 
     // Called when a link is removed in the canvas
     function notifyLinkRemoved(link) {
         console.log('Watcher :: Link Removed');
-        console.log(link);
     }
 
     // Adds a new node to the canvas
     function addNode(newNode) {
         var result = RED.view.addNode(newNode.type, 50, 50);
         result.node.x = 50;
-        result.node.port = 8000;
-        result.node.host = 'localhost';
+        result.node.host = newNode.host;
         result.node.y = 50;
-        console.log(result.node)
         RED.nodes.add(result.node);
         RED.editor.validateNode(result.node);
         RED.view.redraw(true);
@@ -69,19 +78,14 @@ RED.watcher = (function() {
     }
 
     // Called when a new device connects to the message broker
-    function deviceConnected(ip, inputPort, outputPort, settings) {
-        console.log(ip);
-
-        console.log(RED.nodes);
+    function deviceConnected(deviceName) {
         addNode({
-            'host': ip,
-            'port': inputPort,
+            'host': 'TO ' + deviceName,
             'type': 'tcp out'
         });
 
         addNode({
-            'host': ip,
-            'port': outputPort,
+            'host': 'FROM ' + deviceName,
             'type': 'tcp in'
         });
     }

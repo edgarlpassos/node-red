@@ -11,10 +11,9 @@ var settings = {
 // client connection
 var client = mqtt.connect('mqtt://localhost:1883', settings)
 
-console.log(client);
-
 client.on('connect', () => {
 	client.subscribe('raspberry/offline')
+    client.publish('raspberry/offline', 'Hello, m8s');
 })
 
 client.on('message', (topic, message) => {
