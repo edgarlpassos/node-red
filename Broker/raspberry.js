@@ -1,8 +1,31 @@
 var mqtt = require('mqtt')
+var leds = require('node-sense-hat').Leds
+
+//**** RPi led constants
+
+const w = [255, 255, 255]   // white
+const x = [0, 0, 0]         // black
+const r = [255, 0, 0]        // red]
+const g = [0, 255, 0]       // green
+const b = [0, 0, 255]       // blue
+
+const cross = [
+    w, w, r, r, r, r, w, w,
+    w, w, w, r, r, r, w, w,
+    r, w, w, w, r, w, w, r,
+    r, r, w, w, w, w, w, r,
+    r, r, w, w, w, w, r, r,
+    r, w, w, w, w, w, w, r,
+    w, w, w, r, r, w, w, w,
+    w, w, r, r, r, r, w, w,
+]
 
 const id = process.argv[2]
 const brokerIp = process.argv[3]
 const brokerPort = process.argv[4]
+
+leds.clear(x);
+leds.setPixels(cross);
 
 var settings = {
   protocolId: 'MQIsdp',
