@@ -1,5 +1,9 @@
 var mqtt = require('mqtt')
 
+const id = process.argv[2]
+const brokerIp = process.argv[3]
+const brokerPort = process.argv[4]
+
 var settings = {
   protocolId: 'MQIsdp',
   protocolVersion: 3,
@@ -8,47 +12,15 @@ var settings = {
   lastWillMessage: 'Raspberry offline.',
   lastWillQos: 2,
   lastWillRetain: false,
-  clientId: process.env.ID || 'invalid_id'
+  clientId: id
 }
 
+console.log('mqtt://' + brokerIp + ':' + brokerPort + '/');
 // client connection
-var client = mqtt.connect('ws://34aa636e.ngrok.io', settings)
+var client = mqtt.connect('mqtt://' + brokerIp + ':' + brokerPort + '/', settings)
 
 client.on('connect', () => {
-	client.subscribe('hello/me')
+    console.log('sending message');
+	client.subscribe('raspberry/all');
+    client.publish('raspberry/all', 'RPi connected: ' + settings.clientId);
 })
-
-// // client publishing a sample JSON
-// client.publish('hello/you', '{ "hello": "you" }');
-
-// client.on('message', (topic, message) => {
-//   console.log('received', topic, message)
-// })
-// /**
-//  * Want to notify controller that garage is disconnected before shutting down
-//  */
-// handleAppExit: (options, err) => {
-//   if (err) {
-//     console.log(err.stack)
-//   }
-
-//   if (options.cleanup) {
-//     client.publish('garage/connected', 'false')
-//   }
-
-//   if (options.exit) {
-//     process.exit()
-//   }
-// }
-// /**
-//  * Handle the different ways an application can shutdown
-//  */
-// process.on('exit', handleAppExit.bind(null, {
-//   cleanup: true
-// }))
-// process.on('SIGINT', handleAppExit.bind(null, {
-//   exit: true
-// }))
-// process.on('uncaughtException', handleAppExit.bind(null, {
-//   exit: true
-// }))
