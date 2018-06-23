@@ -81,7 +81,7 @@ RED.watcher = (function() {
         }
 
         // And publish a message telling him to subscribe to the other device
-        publish('raspberry/all', 'SUBSCRIBE ' + subscriberName + ' ' + publisherName);
+        client.publish('raspberry/all', 'SUBSCRIBE ' + subscriberName + ' ' + publisherName);
     }
 
     // Called when a link is removed in the canvas
