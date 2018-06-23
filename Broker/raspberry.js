@@ -50,8 +50,8 @@ client.on('connect', () => {
 client.on('message', function (topic, message) {
     switch(topic) {
         case 'raspberry/all':
-            var messageContent = message.split(' ');
-            if (messageContent[2] === this.client.id) {
+            var messageContent = message.toString().split(' ');
+            if (messageContent[2] === settings.clientId) {
                 parseBroadcast(messageContent);
             }
             break;
