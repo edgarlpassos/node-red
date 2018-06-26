@@ -58,7 +58,7 @@ RED.watcher = (function() {
 
         // removing a device
         if (node.type === 'tcp out' || node.type === 'tcp in') {
-            var deviceName = node.host.split(' ')[0];
+            var deviceName = node.host.split(' ')[1];
             client.publish('raspberry/all', 'DISCONNECT ' + deviceName);
         }
     }
@@ -105,8 +105,8 @@ RED.watcher = (function() {
         console.log('Watcher :: Link Removed');
 
         // TCP out port (rPi input) is always the target
-        var subscriberName = link.target.host.split(' ')[0];
-        var publisherName = link.source.host.split(' ')[0];
+        var subscriberName = link.target.host.split(' ')[1];
+        var publisherName = link.source.host.split(' ')[1];
 
 
         client.publish('raspberry/all', 'UNSUB ' + subscriberName + ' ' + publisherName);

@@ -304,6 +304,7 @@ RED.nodes = (function() {
             links.splice(index,1);
         }
         console.log(l);
+        RED.watcher.notifyLinkRemoved(l);
     }
 
     function addWorkspace(ws) {
