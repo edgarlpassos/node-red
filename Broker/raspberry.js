@@ -70,7 +70,7 @@ var settings = {
     protocolVersion: 3,
     keepalive: 1000, // sec
     lastWillTopic: 'raspberry/offline',
-    lastWillMessage: 'OFFLINE ' + settings.clientId,
+    lastWillMessage: 'OFFLINE ' + id,
     lastWillQos: 2,
     lastWillRetain: false,
     clientId: id
