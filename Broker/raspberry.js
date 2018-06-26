@@ -70,7 +70,7 @@ var settings = {
     protocolVersion: 3,
     keepalive: 1000, // sec
     lastWillTopic: 'raspberry/offline',
-    lastWillMessage: 'Raspberry offline.',
+    lastWillMessage: 'OFFLINE ' + settings.clientId,
     lastWillQos: 2,
     lastWillRetain: false,
     clientId: id
@@ -79,12 +79,11 @@ var settings = {
 console.log('mqtt://' + brokerIp + ':' + brokerPort + '/');
 // client connection
 var client = mqtt.connect('mqtt://' + brokerIp + ':' + brokerPort + '/', settings)
-Leds.setPixels(cross);
 
 client.on('connect', () => {
     client.subscribe('raspberry/all');
     client.publish('raspberry/all', 'RPi connected: ' + settings.clientId);
-    Leds.setPixels(check);
+    Leds.showMessage('CONNECTED', () => Leds.setPixels(check));
 })
 
 client.on('message', function (topic, message) {
@@ -111,11 +110,23 @@ function parseBroadcast(content) {
             if (content[1].trim() === settings.clientId) {
                 var deviceName = content[2].trim();
                 client.subscribe('raspberry/' + deviceName);
-                Leds.showMessage('Subscribed to ' + deviceName);
+                Leds.showMessage('Subscribed to ' + deviceName, () => Leds.setPixels(check));
             }
-                Leds.setPixels(check);
             break;
-
+        
+        case 'UNSUB':
+            if (content[1].trim() === settings.clientId) {
+                var deviceName = content[2].trim();
+                client.unsubscribe('raspberry/' + deviceName);
+                Leds.showMessage('Unsubscribed from ' + deviceName, () => Leds.clear());
+            }
+            break;
+        case 'DISCONNECT':
+            if (content[1].trim() === settings.clientId) {
+                client.end()
+                Leds.showMessage('Disconnecting', () => Leds.clear(x));
+            }
+            break;
         default:
             break;
     }

@@ -15,6 +15,7 @@ RED.watcher = (function() {
     var client = mqtt.connect('ws://localhost:1080', settings)
 
     client.on('connect', function() {
+        client.subscribe('raspberry/offline');
         client.subscribe('raspberry/all');
     })
 
@@ -28,6 +29,14 @@ RED.watcher = (function() {
                     deviceConnected(deviceName);
                 }
                 break;
+            case 'raspberry/offline':
+                var parsedMessage = new TextDecoder("utf-8").decode(message);
+                var messageInfo = parsedMessage.split(' ');
+                if (messageInfo[0] === 'OFFLINE') {
+                    console.log(messgeInfo[1] + ' Disconnected');
+                }
+                break;
+
             default:
                 break;
         }
@@ -45,6 +54,13 @@ RED.watcher = (function() {
     // Called when a node is removed in the canvas
     function notifyNodeRemoved(node) {
         console.log('Watcher :: Node Removed');
+        console.log(node);
+
+        // removing a device
+        if (node.type === 'tcp out' || node.type === 'tcp in') {
+            var deviceName = node.host.split(' ')[0];
+            client.publish('raspberry/all', 'DISCONNECT ' + deviceName);
+        }
     }
 
     // Called when a link is added in the canvas
@@ -87,6 +103,13 @@ RED.watcher = (function() {
     // Called when a link is removed in the canvas
     function notifyLinkRemoved(link) {
         console.log('Watcher :: Link Removed');
+
+        // TCP out port (rPi input) is always the target
+        var subscriberName = link.target.host.split(' ')[0];
+        var publisherName = link.source.host.split(' ')[0];
+
+
+        client.publish('raspberry/all', 'UNSUB ' + subscriberName + ' ' + publisherName);
     }
 
     // Adds a new node to the canvas
