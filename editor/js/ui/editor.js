@@ -946,7 +946,10 @@ RED.editor = (function() {
                     id: "node-dialog-ok",
                     text: RED._("common.label.done"),
                     class: "primary",
+                    // Confirm editing
                     click: function() {
+                        RED.watcher.test();
+                        console.log('Changed node');
                         var changes = {};
                         var changed = false;
                         var wasDirty = RED.nodes.dirty();
@@ -981,6 +984,7 @@ RED.editor = (function() {
                                             changed = true;
                                         }
                                     } else {
+                                        console.log('Changes ocurred');
                                         if (JSON.stringify(oldValues[d]) !== JSON.stringify(editing_node[d])) {
                                             changes[d] = oldValues[d];
                                             changed = true;
@@ -1059,7 +1063,9 @@ RED.editor = (function() {
                                                 }
                                             }
                                             changes[d] = editing_node[d];
+                                            console.log("Changing " + editing_node[d] + " to " + newValue);
                                             editing_node[d] = newValue;
+                                            console.log(editing_node);
                                             changed = true;
                                         }
                                     }
@@ -1133,6 +1139,7 @@ RED.editor = (function() {
                                     }
                                 });
                             }
+                            console.log(changes);
                             var historyEvent = {
                                 t:'edit',
                                 node:editing_node,

@@ -187,6 +187,8 @@ RED.nodes = (function() {
     }
 
     function addNode(n) {
+        console.log("editor/js/nodes.js :: node Added");
+        RED.watcher.notifyNodeAdded(n);
         if (n.type.indexOf("subflow") !== 0) {
             n["_"] = n._def._;
         } else {
@@ -216,7 +218,9 @@ RED.nodes = (function() {
         RED.events.emit('nodes:add',n);
     }
     function addLink(l) {
+        console.log("editor/js/nodes.js :: link Added");
         links.push(l);
+        RED.watcher.notifyLinkAdded(l);
     }
 
     function getNode(id) {
@@ -287,6 +291,10 @@ RED.nodes = (function() {
             console.log("Deprecated API warning: node type ",node.type," has an onremove function - should be oneditremove - please report");
             node._def.onremove.call(n);
         }
+
+        RED.watcher.notifyNodeRemoved(node);
+        removedLinks.forEach(function(link) { RED.watcher.notifyLinkRemoved(link) });
+
         return {links:removedLinks,nodes:removedNodes};
     }
 
@@ -295,6 +303,8 @@ RED.nodes = (function() {
         if (index != -1) {
             links.splice(index,1);
         }
+        console.log(l);
+        RED.watcher.notifyLinkRemoved(l);
     }
 
     function addWorkspace(ws) {

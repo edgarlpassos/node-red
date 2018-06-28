@@ -84,6 +84,9 @@ module.exports = {
         }
         adminApp = runtime.adminApi.adminApp;
         nodeApp = runtime.nodeApp;
+        if (userSettings.liveSoftwareDevelopment) { // live software development is enabled, create a watcher and a broker
+            console.log("Enabling LSD"); // TODO remove this
+        }
         return;
     },
     start: function() {

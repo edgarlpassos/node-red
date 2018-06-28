@@ -36,6 +36,7 @@ module.exports = {
         }
     },
     post: function(req,res) {
+        console.log("Posting Flows"); // TODO: remove this [ASSO]
         var version = req.get("Node-RED-API-Version")||"v1";
         if (!/^v[12]$/.test(version)) {
             log.audit({event: "flows.set",version:version,error:"invalid_api_version"},req);

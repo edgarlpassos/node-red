@@ -339,6 +339,7 @@ RED.view = (function() {
             drop: function( event, ui ) {
                 d3.event = event;
                 var selected_tool = ui.draggable[0].type;
+                console.log(ui.draggable[0].type);
                 var result = addNode(selected_tool);
                 if (!result) {
                     return;
@@ -382,6 +383,8 @@ RED.view = (function() {
                 }
 
                 RED.history.push(historyEvent);
+                console.log("view.js :: adding node");
+                console.log(nn)
                 RED.nodes.add(nn);
                 RED.editor.validateNode(nn);
                 RED.nodes.dirty(true);
@@ -467,7 +470,10 @@ RED.view = (function() {
         var nn = { id:RED.nodes.id(),z:RED.workspaces.active()};
 
         nn.type = type;
+        console.log('fetching defs');
         nn._def = RED.nodes.getType(nn.type);
+        console.log(nn.type);
+        console.log(nn);
 
         if (!m) {
             nn.inputs = nn._def.inputs || 0;
@@ -2668,6 +2674,7 @@ RED.view = (function() {
 
     return {
         init: init,
+        addNode: addNode,
         state:function(state) {
             if (state == null) {
                 return mouse_mode

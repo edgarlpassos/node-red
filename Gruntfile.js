@@ -128,6 +128,7 @@ module.exports = function(grunt) {
                     "editor/js/nodes.js",
                     "editor/js/history.js",
                     "editor/js/validators.js",
+                    "editor/js/watcher.js",
                     "editor/js/ui/utils.js",
                     "editor/js/ui/common/editableList.js",
                     "editor/js/ui/common/checkboxSet.js",
@@ -174,8 +175,9 @@ module.exports = function(grunt) {
                         "editor/vendor/jquery/js/jquery-ui-1.10.3.custom.min.js",
                         "editor/vendor/jquery/js/jquery.ui.touch-punch.min.js",
                         "editor/vendor/marked/marked.min.js",
-                        "editor/vendor/d3/d3.v3.min.js",
-                        "editor/vendor/i18next/i18next.min.js"
+                        "editor/vendor/d3/d3.v3.min.js", 
+                        "editor/vendor/i18next/i18next.min.js",
+                        "editor/vendor/mqtt/browserMqtt.js"
                     ],
                     "public/vendor/vendor.css": [
                         // TODO: resolve relative resource paths in
